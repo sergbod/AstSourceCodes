@@ -23,6 +23,17 @@ public class Asterix {
 		return fspec;
 	}
 	
+	public long getAstMsgRecFSPECreversed(ArrayList<Byte> rcvdMsg) { //Returns reversed Asterix Field Specification
+		int pos = 0;
+		long fspec = Byte.toUnsignedInt(rcvdMsg.get(pos));
+		while ((fspec & 0b1) != 0) {
+			pos++;
+			fspec = (fspec << 8) | Byte.toUnsignedInt(rcvdMsg.get(pos));
+		}
+		long fspecRev = Long.reverse(fspec) >> (64 - ((pos + 1) * 8));
+		return fspecRev;
+	}
+	
 	public void AsterixMsgProcessing(ArrayList<Byte> inpMsg, int lenth) {
 		Asterix astProc = new Asterix();
 		int astCat = astProc.getAstMsgCat(inpMsg);
